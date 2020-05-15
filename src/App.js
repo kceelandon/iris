@@ -1,65 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import firestore from './firestore';
-import firebase from 'firebase'
+import './App.scss';
+import React, {Component} from 'react';
+import User from './pages/user';
+import Dropdown from './components/Dropdown'
 
-/*
-  example app for populating the firestore database.
-*/
-
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-     email: '',
-     fullname: ''
-    };
+const classList = [
+  {
+    id: 1,
+    value: 'CSE 403'
+  },
+  {
+    id: 2,
+    value: 'CSE 441'
   }
+];
 
-  updateInput = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  }
-
-  addUser = e => {
-    e.preventDefault();
-    const db = firebase.firestore();
-    db.settings({
-      timestampsInSnapshots: true
-    });
-    const userRef = db.collection("users").add({
-      fullname: this.state.fullname,
-      email: this.state.email
-    });
-    this.setState({
-      fullname: '',
-      email: ''
-    });
-  };
-
+class App extends Component {
   render() {
     return (
-        <form onSubmit={this.addUser}>
-          <input
-            type="text"
-            name="fullname"
-            placeholder="Full name"
-            onChange={this.updateInput}
-            value={this.state.fullname}
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={this.updateInput}
-            value={this.state.email}
-          />
-          <button type="submit">Submit</button>
-        </form>
+      <div className="container">
+      <h1 style={{ textAlign: 'center' }}>
+        Pick Classes{' '}
+      </h1>
+      <Dropdown title="Add a class" items={classList} multiSelect />
+    </div>
     );
   }
 }
 
 export default App;
+
+

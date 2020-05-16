@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 import Dropdown from '../components/Dropdown';
 import ClassButton from '../components/ClassButton';
 import firebase from 'firebase';
+import SimpleModal from '../components/SimpleModal';
+import { BrowserRouter } from 'react-router-dom';
 
 const classList = [
   {
@@ -46,7 +48,6 @@ const classList = [
     value: 'CSE 332'
   }
 ];
-
 
 
 class Home extends Component {
@@ -98,6 +99,7 @@ class Home extends Component {
                 <ClassButton value={this.state.classSelection[1]}/>
                 <ClassButton value={this.state.classSelection[2]}/>
                 <ClassButton value={this.state.classSelection[3]}/>
+                <SimpleModal/>
             </div>
         );
     }

@@ -7,3 +7,5 @@ import firebase from 'firebase'
 class Classes extends React.Component {
 
 }
+
+export default Classes;

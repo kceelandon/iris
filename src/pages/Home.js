@@ -4,7 +4,7 @@ import Dropdown from '../components/Dropdown';
 import ClassButton from '../components/ClassButton';
 import firebase from 'firebase';
 import SimpleModal from '../components/SimpleModal';
-import { BrowserRouter } from 'react-router-dom';
+import Classes from './Classes';
 
 const classList = [
   {
@@ -57,7 +57,8 @@ class Home extends Component {
             classSelection: ['Add a new class in the dropdown menu!', 
             'Add a new class in the dropdown menu!', 
             'Add a new class in the dropdown menu!', 
-            'Add a new class in the dropdown menu!']
+            'Add a new class in the dropdown menu!'],
+            visible: true
         }
         this.updateState = this.updateState.bind(this);
     }
@@ -88,18 +89,32 @@ class Home extends Component {
         }
     }
 
+    handleClick() {
+      this.setState({
+        visible: false
+      });
+      console.log(this.state.visible);
+    }
+
     render() {
+      const display = this.state.visible ? (
+        <div className="homePage">
+            <h1 style={{ textAlign: 'center' }}>
+                Class Dashboard{' '}
+            </h1>
+            <Dropdown title="Add a class" update={this.updateState} items={classList} multiSelect />
+            <ClassButton value={this.state.classSelection[0]} onClick={() => this.handleClick()}/>
+            <ClassButton value={this.state.classSelection[1]} onClick={() => this.handleClick()}/>
+            <ClassButton value={this.state.classSelection[2]} onClick={() => this.handleClick()}/>
+            <ClassButton value={this.state.classSelection[3]} onClick={() => this.handleClick()}/>
+            <SimpleModal/>
+        </div>
+      ) : (
+        <Classes/>
+      );
         return (
             <div className="container">
-                <h1 style={{ textAlign: 'center' }}>
-                    Class Dashboard{' '}
-                </h1>
-                <Dropdown title="Add a class" update={this.updateState} items={classList} multiSelect />
-                <ClassButton value={this.state.classSelection[0]}/>
-                <ClassButton value={this.state.classSelection[1]}/>
-                <ClassButton value={this.state.classSelection[2]}/>
-                <ClassButton value={this.state.classSelection[3]}/>
-                <SimpleModal/>
+                {display}
             </div>
         );
     }

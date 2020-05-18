@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import onClickOutside from 'react-onclickoutside';
 
 
-function Dropdown({ title, update, items, multiSelect = false }) {
+function Dropdown({ title, update, items, multiSelect = false, currentlySelected}) {
   const [open, setOpen] = useState(false);
-  const [selection, setSelection] = useState([]);
+  const [selection, setSelection] = useState(currentlySelected);
   const toggle = () => setOpen(!open);
   const [count, setCount] = useState(0);
   Dropdown.handleClickOutside = () => setOpen(false);
+  
 
   // everytime a class is added, it should be added to the database and associated with the current user
   function handleOnClick(item) {
-    if (!selection.some(current => current.id === item.id)) {
-      if (!multiSelect) {
-        setSelection([item]);
-      } else if (multiSelect && count !== 4) {
+    //var db = firebase.firestore();
+    if (!selection.includes(item.value)) { // if item is not already in selection array
+      if (multiSelect && count !== 4) {
         setCount(count + 1);
+        //db.collection("users").add(item)
         setSelection([...selection, item]); // add class here
         update(item.value);
       } else {
@@ -24,13 +25,13 @@ function Dropdown({ title, update, items, multiSelect = false }) {
     } else {
       let selectionAfterRemoval = selection;
       selectionAfterRemoval = selectionAfterRemoval.filter(
-        current => current.id !== item.id
+        current => current.value !== item.value
       );
       // remove class from user's current class selection list
       // TODO: update class selection in database
       if (count > 0) {
         setCount(count - 1); 
-        console.log(count);
+        //db.ref('users/item').remove()
       }
       setSelection([...selectionAfterRemoval]);
       update(item.value);
@@ -38,10 +39,11 @@ function Dropdown({ title, update, items, multiSelect = false }) {
   }
 
   function isItemInSelection(item) {
-    if (selection.some(current => current.id === item.id)) {
+    if (selection.includes(item.value)) {
       return true;
     }
     return false;
+
   }
 
   return (

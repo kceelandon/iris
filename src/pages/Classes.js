@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import firestore from '../services/firestore';
 import firebase from 'firebase'
 import Home from './Home';
+import ClassButton from '../components/ClassButton';
+import SimpleModal from '../components/SimpleModal';
 
 // page for viewing a class and it's studentList
 
@@ -13,10 +15,40 @@ import Home from './Home';
 // that component stored and rendered here in the Classes page component.
 
 class Classes extends React.Component {
+    constructor(props) {
+      super(props);
+    this.state = {
+      classSelection: this.props.classSelection,
+      isClassesVisible: true,
+      currentPage: this.props.currentPage
+    }
+    this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+      this.setState({
+        isClassesVisible: false
+      });
+    }
+
     render() {
+      console.log(this.state.classSelection);
+      let classSelectionState = this.state.classSelection.slice();
+      let pageTitle = this.state.currentPage;
+      const display = this.state.isClassesVisible ? (
+        <div className="classPage">
+            <h1 style={{ textAlign: 'center' }}>
+                {pageTitle}
+            </h1>
+            <ClassButton value="back to dashboard" onClick={() => {this.handleClick()}}/>
+            <SimpleModal/>
+        </div>
+      ) : (
+        <Home isHomeVisible={true} classSelection={classSelectionState}/>
+      );
         return (
           <div className="Classes">
-            Hello from Class Page
+            {display}
           </div>    
         );
     }

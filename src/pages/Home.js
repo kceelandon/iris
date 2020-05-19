@@ -120,13 +120,17 @@ class Home extends Component {
     const display = this.state.isHomeVisible ? (
       <div className="homePage">
         <h1 style={{ textAlign: 'center' }}>
-          Class Dashboard{' '}
+          Class Dashboard
         </h1>
         <Dropdown title="Add a class" update={this.updateState} items={classListCopy} multiSelect currentlySelected={classSelectionState} updatedCount={count}/>
         <ClassButton value={this.state.classSelection[0]} onClick={() => this.handleClick(this.state.classSelection[0])}/>
         <ClassButton value={this.state.classSelection[1]} onClick={() => this.handleClick(this.state.classSelection[1])}/>
         <ClassButton value={this.state.classSelection[2]} onClick={() => this.handleClick(this.state.classSelection[2])}/>
         <ClassButton value={this.state.classSelection[3]} onClick={() => this.handleClick(this.state.classSelection[3])}/>
+        <span>
+          <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
+          {' '} Currently signed in as: {firebase.auth().currentUser.displayName}
+        </span>
       </div>
       ) : (
         <Classes isClassesVisible={true} classSelection={classSelectionState} currentPage={this.state.selectedValue} studentList={studentListCopy}/>

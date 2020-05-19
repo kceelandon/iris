@@ -44,7 +44,6 @@ function Dropdown({ title, update, items, multiSelect = false, currentlySelected
       return true;
     }
     return false;
-
   }
 
   return (

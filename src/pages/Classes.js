@@ -16,12 +16,6 @@ import StudentList from '../components/StudentList';
 // TODO: make a way to display different class list depending on the class
 
 // example students
-const students = [
-  { id: 1, name: "Leanne Graham" },
-  { id: 2, name: "Ervin Howell" },
-  { id: 3, name: "Clementine Bauch" },
-  { id: 4, name: "Patricia Lebsack" }
-];
 
 class Classes extends React.Component {
     constructor(props) {
@@ -29,6 +23,7 @@ class Classes extends React.Component {
     this.state = {
       classSelection: this.props.classSelection,
       isClassesVisible: true,
+      students: this.props.studentList,
       currentPage: this.props.currentPage // could use this state to determine the class list
     }
     this.handleClick = this.handleClick.bind(this);
@@ -50,7 +45,7 @@ class Classes extends React.Component {
                 {pageTitle}
             </h1>
             <ClassButton value="back to dashboard" onClick={() => {this.handleClick()}}/>
-            <StudentList students={students}/>
+            <StudentList students={this.state.students}/>
         </div>
       ) : (
         <Home isHomeVisible={true} classSelection={classSelectionState}/>

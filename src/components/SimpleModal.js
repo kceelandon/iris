@@ -44,6 +44,14 @@ const useStyles = makeStyles((theme) => ({
     const handleClose = () => {
       setOpen(false);
     };
+
+    const handleConfirm = () => {
+      window.open(
+        'http://zoom.us',
+        '_blank' // <- This is what makes it open in a new window.
+      );
+      setOpen(false);
+    };
   
     const body = (
       <div style={modalStyle} className={classes.paper}>
@@ -54,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
         <button type="button" onClick={handleClose}>
             Cancel
         </button>
-        <button type="button" onClick={handleClose}>
+        <button type="button" onClick={handleConfirm}>
             Confirm
         </button>
       </div>

@@ -111,7 +111,7 @@ class Home extends Component {
         <h1 style={{ textAlign: 'center' }}>
           Class Dashboard{' '}
         </h1>
-        <Dropdown title="Add a class" update={this.updateState} items={classList} multiSelect currentlySelected={classSelectionState}/>
+        <Dropdown title="Add a class" update={this.updateState} items={classList} multiSelect currentlySelected={classSelectionState} updatedCount={count}/>
         <ClassButton value={this.state.classSelection[0]} onClick={() => this.handleClick(this.state.classSelection[0])}/>
         <ClassButton value={this.state.classSelection[1]} onClick={() => this.handleClick(this.state.classSelection[1])}/>
         <ClassButton value={this.state.classSelection[2]} onClick={() => this.handleClick(this.state.classSelection[2])}/>

@@ -3,16 +3,25 @@ import firestore from '../services/firestore';
 import firebase from 'firebase'
 import Home from './Home';
 import ClassButton from '../components/ClassButton';
-import SimpleModal from '../components/SimpleModal';
+import StudentList from '../components/StudentList';
 
 // page for viewing a class and it's studentList
 
-// TODO: Implement a way to get back to Home.js (see Home.js for navigation example)
 // TODO: List people who are online and allow people to invite them
 // Maybe make a container (component) for storing each student entry called StudentHolder.js maybe?
 // Have that class render the student name and the Invite Modal
 // We will then have a component that will render a list of those StudentHolders and have
 // that component stored and rendered here in the Classes page component.
+
+// TODO: make a way to display different class list depending on the class
+
+// example students
+const students = [
+  { id: 1, name: "Leanne Graham" },
+  { id: 2, name: "Ervin Howell" },
+  { id: 3, name: "Clementine Bauch" },
+  { id: 4, name: "Patricia Lebsack" }
+];
 
 class Classes extends React.Component {
     constructor(props) {
@@ -20,7 +29,7 @@ class Classes extends React.Component {
     this.state = {
       classSelection: this.props.classSelection,
       isClassesVisible: true,
-      currentPage: this.props.currentPage
+      currentPage: this.props.currentPage // could use this state to determine the class list
     }
     this.handleClick = this.handleClick.bind(this);
     }
@@ -41,7 +50,7 @@ class Classes extends React.Component {
                 {pageTitle}
             </h1>
             <ClassButton value="back to dashboard" onClick={() => {this.handleClick()}}/>
-            <SimpleModal/>
+            <StudentList students={students}/>
         </div>
       ) : (
         <Home isHomeVisible={true} classSelection={classSelectionState}/>

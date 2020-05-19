@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import onClickOutside from 'react-onclickoutside';
 
 
-function Dropdown({ title, update, items, multiSelect = false, currentlySelected}) {
+function Dropdown({ title, update, items, multiSelect = false, currentlySelected, updatedCount}) {
   const [open, setOpen] = useState(false);
   const [selection, setSelection] = useState(currentlySelected);
   const toggle = () => setOpen(!open);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(updatedCount);
   Dropdown.handleClickOutside = () => setOpen(false);
   
 
@@ -14,7 +14,7 @@ function Dropdown({ title, update, items, multiSelect = false, currentlySelected
   function handleOnClick(item) {
     //var db = firebase.firestore();
     if (!selection.includes(item.value)) { // if item is not already in selection array
-      if (multiSelect && count !== 4) {
+      if (multiSelect && count < 4) {
         setCount(count + 1);
         //db.collection("users").add(item)
         setSelection([...selection, item]); // add class here
@@ -23,6 +23,7 @@ function Dropdown({ title, update, items, multiSelect = false, currentlySelected
         alert('You can only add 4 classes');
       }
     } else {
+
       let selectionAfterRemoval = selection;
       selectionAfterRemoval = selectionAfterRemoval.filter(
         current => current.value !== item.value

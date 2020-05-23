@@ -4,6 +4,7 @@ import firebase from 'firebase'
 import Home from './Home';
 import ClassButton from '../components/ClassButton';
 import StudentList from '../components/StudentList';
+import { ReactComponent as Logo } from '../components/logo.svg';
 
 // page for viewing a class and it's studentList
 
@@ -41,6 +42,7 @@ class Classes extends React.Component {
       let pageTitle = this.state.currentPage;
       const display = this.state.isClassesVisible ? (
         <div className="classPage">
+            <Logo />
             <h1 style={{ textAlign: 'center' }}>
                 {pageTitle}
             </h1>

@@ -4,6 +4,7 @@ import Dropdown from '../components/Dropdown';
 import ClassButton from '../components/ClassButton';
 import firebase from 'firebase';
 import Classes from './Classes';
+import { ReactComponent as Logo } from '../components/logo.svg';
 //import User from './Users';
 
 // maybe add a list of students within the list?
@@ -119,6 +120,7 @@ class Home extends Component {
 
     const display = this.state.isHomeVisible ? (
       <div className="homePage">
+        <Logo />
         <h1 style={{ textAlign: 'center' }}>
           Class Dashboard
         </h1>

@@ -25,6 +25,27 @@ h1 {
   border-right: 2px solid;
 }
 
+.classes-header {
+  text-align: center;
+  margin: 0px 100px;
+}
+
+.class-button {
+  width: 30px; 
+  height: 30px;
+  background-color: green;
+  border: none;
+  color: white;
+  padding: 25px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 0px 0px 0px 0px;
+  border-radius: 50%;
+  justify-content: flex-end;
+  float: right;
+}
+
 .home {
   width: 70%;
   float: right;

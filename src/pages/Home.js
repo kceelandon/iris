@@ -1,10 +1,9 @@
 import '../App.scss';
-import React, {Component} from 'react';
-import Dropdown from '../components/Dropdown';
-import ClassButton from '../components/ClassButton';
+import React, {Component, useState} from 'react';
 import firebase from 'firebase';
 import Classes from './Classes';
 import { ReactComponent as Logo } from '../components/logo.svg';
+import SimpleModal from '../components/SimpleModal';
 //import User from './Users';
 
 // maybe add a list of students within the list?
@@ -100,7 +99,7 @@ class Home extends Component {
   }
 
   // <User/>
-  render() {
+  render() {   
     // copy of user's current class selection
     let classSelectionState = this.state.classSelection.slice();
 
@@ -120,7 +119,11 @@ class Home extends Component {
 
     const display = this.state.isHomeVisible ? (
       <div className="homePage">
-        <Logo />
+        <div class="classes-header">
+          {/* <button class="class-button"></button> */}
+          <SimpleModal/>
+        </div>
+        {/* <Logo />
         <h1 style={{ textAlign: 'center' }}>
           Class Dashboard
         </h1>
@@ -128,10 +131,13 @@ class Home extends Component {
         <ClassButton value={this.state.classSelection[0]} onClick={() => this.handleClick(this.state.classSelection[0])}/>
         <ClassButton value={this.state.classSelection[1]} onClick={() => this.handleClick(this.state.classSelection[1])}/>
         <ClassButton value={this.state.classSelection[2]} onClick={() => this.handleClick(this.state.classSelection[2])}/>
-        <ClassButton value={this.state.classSelection[3]} onClick={() => this.handleClick(this.state.classSelection[3])}/>
+        <ClassButton value={this.state.classSelection[3]} onClick={() => this.handleClick(this.state.classSelection[3])}/> */}
       </div>
       ) : (
+        /*
         <Classes isClassesVisible={true} classSelection={classSelectionState} currentPage={this.state.selectedValue} studentList={studentListCopy}/>
+        */
+       <div></div>
       );
       return (
         <div className="container">

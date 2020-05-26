@@ -1,12 +1,35 @@
 body {
-  background-color: #08AEEA;
-  background-image: linear-gradient(0deg, #08AEEA 0%, #2AF598 100%);
   align-items: center;
   justify-content: center;
   margin-left: auto;
   margin-right:auto;
   text-align: center;
+  height: 100%;
 }
 
+h1 {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.float-container {
+  padding: 20px;
+  white-space: nowrap;
+  height: 100%;
+}
+
+.profile {
+  width: 30%;
+  float: left;
+  padding: 20px;
+  height: 100vh;
+  border-right: 2px solid;
+}
+
+.home {
+  width: 70%;
+  float: right;
+  height: 100%;
+  padding-left: 20px;
+}
 
 

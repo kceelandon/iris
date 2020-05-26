@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import { ReactComponent as Logo } from './components/logo.svg';
 import './index.css';
+import Profile from './pages/Profile';
 
 const classSelectionOriginal = ['Add a new class in the dropdown menu!', 
 'Add a new class in the dropdown menu!', 
@@ -18,7 +19,6 @@ class App extends Component {
   uiConfig = {
     signInFlow: "popup",
     signInOptions: [
-      firebase.auth.EmailAuthProvider.PROVIDER_ID,
       firebase.auth.GoogleAuthProvider.PROVIDER_ID
     ],
     callbacks: {
@@ -29,7 +29,6 @@ class App extends Component {
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user })
-      console.log("user", user)
     })
   }
 
@@ -37,12 +36,19 @@ class App extends Component {
     return (
       <div className='App'>
         {this.state.isSignedIn ? (
-          <span>
-            <Home classSelection={classSelectionOriginal}/>
-          </span>
+          <div id="wrapper" class="float-container">
+            <div id="Profile" class="profile">
+              <Profile/>
+            </div>
+            <div id="Home" class="home">
+              <Home classSelection={classSelectionOriginal}/>
+            </div>
+          </div>
         ) : (
           <div>
             <Logo/>
+            <h1>Connecting the world through color</h1>
+            <br></br>
             <StyledFirebaseAuth
               uiConfig={this.uiConfig}
               firebaseAuth={firebase.auth()}

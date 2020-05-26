@@ -129,10 +129,6 @@ class Home extends Component {
         <ClassButton value={this.state.classSelection[1]} onClick={() => this.handleClick(this.state.classSelection[1])}/>
         <ClassButton value={this.state.classSelection[2]} onClick={() => this.handleClick(this.state.classSelection[2])}/>
         <ClassButton value={this.state.classSelection[3]} onClick={() => this.handleClick(this.state.classSelection[3])}/>
-        <span>
-          <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
-          {' '} Currently signed in as: {firebase.auth().currentUser.displayName}
-        </span>
       </div>
       ) : (
         <Classes isClassesVisible={true} classSelection={classSelectionState} currentPage={this.state.selectedValue} studentList={studentListCopy}/>

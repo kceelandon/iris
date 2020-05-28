@@ -24,7 +24,8 @@ class Profile extends Component {
         let data = {
             name: profileName,
             photoURL: profilePictureURL,
-            email: profileEmail
+            email: profileEmail,
+            classes: []
         };
         db.collection('users').doc(currentUserID).set(data);
 

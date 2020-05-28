@@ -11,6 +11,8 @@ import SimpleModal from '../components/SimpleModal';
 // once we get that, we can add their name to the student list for a class onClick of them adding a class
 // then we also update the database as well.
 
+const db = firebase.firestore();
+
 
 class Home extends Component {
   constructor(props) {
@@ -21,7 +23,8 @@ class Home extends Component {
   }
 
   // <User/>
-  render() {   
+  render() {
+
     const display = this.state.isHomeVisible ? (
       <div className="homePage">
         <div class="classes-header">

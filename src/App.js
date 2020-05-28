@@ -6,10 +6,7 @@ import { ReactComponent as Logo } from './components/logo.svg';
 import './index.css';
 import Profile from './pages/Profile';
 
-const classSelectionOriginal = ['Add a new class in the dropdown menu!', 
-'Add a new class in the dropdown menu!', 
-'Add a new class in the dropdown menu!', 
-'Add a new class in the dropdown menu!'];
+const db = firebase.firestore();
 
 class App extends Component {
   state = {
@@ -29,10 +26,11 @@ class App extends Component {
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user })
-    })
+    });
   }
 
   render() {
+
     return (
       <div className='App'>
         {this.state.isSignedIn ? (

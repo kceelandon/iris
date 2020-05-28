@@ -25,7 +25,9 @@ class Profile extends Component {
                 <span>
                     <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
                 </span>
-                <Statuskey/>
+                <div className='statuskey'>
+                    <Statuskey/>
+                </div>
             </div>
 
         );

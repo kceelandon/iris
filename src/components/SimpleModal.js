@@ -9,10 +9,12 @@ const useStyles = makeStyles((theme) => ({
     paper: {
       position: 'absolute',
       width: 400,
+      height: 400,
       backgroundColor: theme.palette.background.paper,
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+      overflowY: 'scroll'
     },
   }));
   
@@ -38,30 +40,34 @@ const useStyles = makeStyles((theme) => ({
     const [open, setOpen] = React.useState(false);
 
     const [word, setWord] = React.useState('');
-    const [filterDisplay, setFilterDisplay] = React.useState([]);
 
-    const [classesList] = React.useState([
+    var classesList = [
       {
         name: 'CSE 311'
       },
       {
         name: 'CSE 312'
+      },
+      {
+        name: 'CSE 331'
+      },
+      {
+        name: 'CSE 332'
+      },
+      {
+        name: 'CSE 333'
       }
-    ]);
+    ];
+
+    let filteredList = classesList.filter(
+      (className) => {
+        return className.name.toLowerCase().indexOf(word) !== -1;
+      }
+    );
+
 
     const handleChange = e => {
-      let oldList = classesList.map(classTitle => {
-        return {name: classTitle.name.toLowerCase()};
-      });
-  
-      if (e !== '') {
-        let newList = [];
-        setWord(e);
-        newList = oldList.filter(classTitle => classTitle.name.includes(word.toLowerCase()));
-        setFilterDisplay(newList);
-      } else {
-        setFilterDisplay(classesList);
-      }
+      setWord(e.substr(0, 20));
     };
   
     const handleOpen = () => {
@@ -71,11 +77,12 @@ const useStyles = makeStyles((theme) => ({
     const handleClose = () => {
       setOpen(false);
     };
+
   
     const body = (
       <div style={modalStyle} className={styles.paper}>
         <Filter value={word} handleChange={e=>handleChange(e.target.value)}/>
-        <ClassList classes={word.length < 1 ? classesList : filterDisplay}/>
+        <ClassList classes={word.length < 1 ? classesList : filteredList}/>
         <button type="button" onClick={handleClose}>
             Close
         </button>

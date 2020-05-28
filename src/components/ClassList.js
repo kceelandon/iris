@@ -1,4 +1,5 @@
 import React from "react";
+import Button from '@material-ui/core/Button';
 
 export const ClassList = ({ classes }) => {
 
@@ -7,9 +8,9 @@ export const ClassList = ({ classes }) => {
       <h1>Classes</h1>
       {classes.map((classTitle, i) => (
         <div key={i}>
-          <li>
-            <button>{classTitle.name}</button>
-          </li>
+          <ul>
+            {classTitle.name}<Button>Add</Button>
+          </ul>
         </div>
       ))}
     </div>

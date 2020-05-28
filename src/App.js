@@ -41,7 +41,7 @@ class App extends Component {
               <Profile/>
             </div>
             <div id="Home" class="home">
-              <Home classSelection={classSelectionOriginal}/>
+              <Home/>
             </div>
           </div>
         ) : (

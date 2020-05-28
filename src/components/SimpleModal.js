@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Filter } from './Filter';
 import { ClassList } from './ClassList';
+import firebase from 'firebase';
+
+const db = firebase.firestore();
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,30 +44,30 @@ const useStyles = makeStyles((theme) => ({
 
     const [word, setWord] = React.useState('');
 
-    var classesList = [
-      {
-        name: 'CSE 311'
-      },
-      {
-        name: 'CSE 312'
-      },
-      {
-        name: 'CSE 331'
-      },
-      {
-        name: 'CSE 332'
-      },
-      {
-        name: 'CSE 333'
-      }
-    ];
+    let classesRef = db.collection('classes');
+
+    const [classesList, setClassList] = React.useState([]);
+
+    let temp = [];
+
+    // query class list for display
+    let query = classesRef.get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          temp.push({name: doc.id});
+        });
+        setClassList(temp);
+      })
+      .catch(err => {
+        console.log('error getting docs', err);
+      });
+
 
     let filteredList = classesList.filter(
       (className) => {
         return className.name.toLowerCase().indexOf(word.toLowerCase()) !== -1;
       }
     );
-
 
     const handleChange = e => {
       setWord(e.substr(0, 20));

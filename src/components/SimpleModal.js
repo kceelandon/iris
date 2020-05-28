@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 
     let filteredList = classesList.filter(
       (className) => {
-        return className.name.toLowerCase().indexOf(word) !== -1;
+        return className.name.toLowerCase().indexOf(word.toLowerCase()) !== -1;
       }
     );
 

@@ -5,15 +5,18 @@ import { ReactComponent as Statuskey } from '../components/statuskey.svg';
 
 const db = firebase.firestore();
 
-class Profile extends Component { 
+var user = firebase.auth().currentUser;
 
-    render() {
-        // getting updated profile data from google and adding it to database
+
+class Profile extends Component {
+    constructor(props) {
+        super(props);
+        let currentUserID = firebase.auth().currentUser.uid;
         let user = firebase.auth().currentUser;
         let profilePictureURL = '';
         let profileName = '';
         let profileEmail = '';
-        let currentUserID = firebase.auth().currentUser.uid;
+        // getting updated profile data from google and adding it to database
         if (user != null) {
             user.providerData.forEach(function (profile) {
                 profilePictureURL = profile.photoURL;
@@ -24,8 +27,7 @@ class Profile extends Component {
         let data = {
             name: profileName,
             photoURL: profilePictureURL,
-            email: profileEmail,
-            classes: []
+            email: profileEmail
         };
         db.collection('users').doc(currentUserID).set(data);
 
@@ -40,16 +42,27 @@ class Profile extends Component {
                     profilePictureURL = dbData.photoURL;
                     profileName = dbData.name;
                     profileEmail = dbData.email;
+                    if (typeof dbData.classes === 'undefined') {
+                        db.collection('users').doc(currentUserID).update({classes: []});
+                    }
                 }
             })
             .catch(err => {
                 console.log('unable to retrieve document', err);
             });
+        this.state = {
+            displayName: profileName,
+            displayEmail: profileEmail,
+            displayPictureURL: profilePictureURL
+        }
+    }
+
+    render() {
         return (
             <div>
-                <img src={profilePictureURL} alt="profile picture" height='100' width='100'/>
-                <h3>{profileName}</h3>
-                <p>{profileEmail}</p>
+                <img src={this.state.displayPictureURL} alt="user profile" height='100' width='100'/>
+                <h3>{this.state.displayName}</h3>
+                <p>{this.state.displayEmail}</p>
                 <span>
                     <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
                 </span>

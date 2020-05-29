@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Filter } from './Filter';
-import { ClassList } from './ClassList';
+import ClassList from './ClassList';
 import firebase from 'firebase';
 
 const db = firebase.firestore();
@@ -45,23 +45,48 @@ const useStyles = makeStyles((theme) => ({
     const [word, setWord] = React.useState('');
 
     let classesRef = db.collection('classes');
+    let curr = firebase.auth().currentUser.uid;
 
     const [classesList, setClassList] = React.useState([]);
+    const [userList, setUserList] = React.useState([]);
 
     let temp = [];
 
-    // query class list for display
-    let query = classesRef.get()
+    let classListTemp = [];
+
+    
+    
+    useEffect(() => {
+      let acquireData = db.collection('users').doc(curr).get()
+      .then(doc => {
+        if (!doc.exists) {
+          console.log('doc does not exist');
+        } else {
+          let data = doc.data();
+          if (typeof data.classes !== 'undefined') {
+            temp = data.classes.slice();
+          } else {
+            db.collection('users').doc(curr).update({classes: []});
+          }
+          setUserList(temp);
+        }
+      })
+      .catch(err => {
+        console.log('unable to retrieve document', err);
+      });
+
+      // query class list for display
+      let query = classesRef.get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          temp.push({name: doc.id});
+          classListTemp.push({name: doc.id});
         });
-        setClassList(temp);
+        setClassList(classListTemp);
       })
       .catch(err => {
         console.log('error getting docs', err);
       });
-
+    });
 
     let filteredList = classesList.filter(
       (className) => {
@@ -85,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
     const body = (
       <div style={modalStyle} className={styles.paper}>
         <Filter value={word} handleChange={e=>handleChange(e.target.value)}/>
-        <ClassList classes={word.length < 1 ? classesList : filteredList}/>
+        <ClassList classes={word.length < 1 ? classesList : filteredList} userClasses={userList}/>
         <button type="button" onClick={handleClose}>
             Close
         </button>

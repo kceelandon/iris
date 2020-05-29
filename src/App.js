@@ -6,8 +6,6 @@ import { ReactComponent as Logo } from './components/logo.svg';
 import './index.css';
 import Profile from './pages/Profile';
 
-const db = firebase.firestore();
-
 class App extends Component {
   state = {
     isSignedIn: false

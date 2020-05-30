@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     const [word, setWord] = React.useState('');
 
     let classesRef = db.collection('classes');
-    let curr = firebase.auth().currentUser.uid;
+    
 
     const [classesList, setClassList] = React.useState([]);
     const [userList, setUserList] = React.useState([]);
@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
     
     
     useEffect(() => {
+      let curr = firebase.auth().currentUser.uid;
       let acquireData = db.collection('users').doc(curr).get()
       .then(doc => {
         if (!doc.exists) {

@@ -3,6 +3,7 @@ import firebase from 'firebase';
 
 
 const db = firebase.firestore();
+
   /*
   let acquireData = db.collection('users').doc(currentUser).get()
     .then(doc => {
@@ -32,6 +33,24 @@ class ClassList extends Component {
       userClasses: this.props.userClasses
     };
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    let currentUser = firebase.auth().currentUser.uid;
+    let classesRef = db.collection('classes');
+    let query = classesRef.get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          let userIdList = doc.data().users.slice();
+          if (!userIdList.includes(currentUser) && this.state.userClasses.includes(doc.id)) {
+            userIdList.push(currentUser);
+            db.collection('classes').doc(doc.id).update({users: userIdList});
+          }
+        });
+      })
+      .catch(err => {
+        console.log('error getting docs', err);
+      });
   }
 
   handleClick(className) {

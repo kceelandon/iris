@@ -26,8 +26,8 @@ class Home extends Component {
   render() {
 
     const display = this.state.isHomeVisible ? (
-      <div className="homePage">
-        <div class="classes-header">
+      <div className="home-page">
+        <div>
           {/* <button class="class-button"></button> */}
           <SimpleModal/>
         </div>

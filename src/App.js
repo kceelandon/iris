@@ -32,8 +32,8 @@ class App extends Component {
     return (
       <div className='App'>
         {this.state.isSignedIn ? (
-          <div id="wrapper" class="float-container">
-            <div id="Profile" class="profile">
+          <div id="wrapper" className="float-container">
+            <div id="Profile" className="profile">
               <Profile/>
             </div>
             <div id="Home" class="home">

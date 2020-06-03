@@ -71,7 +71,7 @@ class ClassList extends Component {
         {classCopy.map((classTitle, i) => (
           <div key={i}>
             <ul>
-              {classTitle.name}<button onClick={this.handleClick(classTitle.name)}>Add</button>
+              {classTitle.name}<button onClick={this.handleClick.bind(this, classTitle.name)}>Add</button>
             </ul>
           </div>
         ))}

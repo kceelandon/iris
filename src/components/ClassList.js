@@ -57,7 +57,8 @@ class ClassList extends Component {
     let currentUser = firebase.auth().currentUser.uid;
     let userClassListCopy = this.state.userClasses.slice();
     if (!userClassListCopy.includes(className) && userClassListCopy.length < 4) {
-      userClassListCopy.push(className);
+      userClassListCopy.push({name: className, status: 'offline'});
+      console.log('initialized offline');
       this.setState({userClasses: userClassListCopy});
       db.collection('users').doc(currentUser).update({classes: userClassListCopy});
     }

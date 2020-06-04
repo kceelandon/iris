@@ -4,6 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import { Filter } from './Filter';
 import ClassList from './ClassList';
 import firebase from 'firebase';
+import { ReactComponent as Offline } from './offline.svg';
 import { ReactComponent as StudyAlone } from './studyalone.svg';
 
 const db = firebase.firestore();
@@ -57,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
     const [studentModal, setStudentModal] = React.useState(false);
 
 
+
     let temp = [];
 
     let classListTemp = [];
@@ -94,6 +96,8 @@ const useStyles = makeStyles((theme) => ({
       .catch(err => {
         console.log('error getting docs', err);
       });
+
+
     });
 
     let filteredList = classesList.filter(
@@ -154,6 +158,29 @@ const useStyles = makeStyles((theme) => ({
       setClassTitle(t);
     };
 
+    function handleStatusClick(s, nameOfClass) {
+      console.log(s);
+      let curr = firebase.auth().currentUser.uid;
+      let userListCopy = userList.slice();
+      for (let i = 0; i < userListCopy.length; i++) {
+        if (userListCopy[i].name === nameOfClass) {
+          if (s === 'offline') {
+            userListCopy[i].status = 'study with others';
+            console.log('reached here');
+          } else if (s === 'study with others') {
+            userListCopy[i].status = 'study alone';
+          } else {  
+            userListCopy[i].status = 'offline';
+            console.log('offline');
+          }
+          db.collection('users').doc(curr).update({classes: userListCopy});
+          setUserList(userListCopy);
+          console.log(userListCopy);
+          break;
+        }
+      }
+    }
+
   
     const body = (
       <div style={modalStyle} className={styles.paper}>
@@ -200,9 +227,14 @@ const useStyles = makeStyles((theme) => ({
           </div>
 
           {userList.map((classTitle, i) => (
-              <button key={i} class="classes-button" onClick={handleClassClick.bind(this, classTitle)} style={{backgroundImage: `linear-gradient(to right, yellow 80%, white 20%)`}}>
-                    {classTitle}
+            <div>
+              <button class="status-button" onClick={handleStatusClick.bind(this, classTitle.status, classTitle.name)}>
+                    {classTitle.status}
               </button>
+              <button key={i} class="classes-button" onClick={handleClassClick.bind(this, classTitle.name)} style={{backgroundImage: `linear-gradient(to right, yellow 80%, white 20%)`}}>
+                    {classTitle.name}
+              </button>
+            </div>
           ))}
 
           </div>

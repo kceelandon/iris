@@ -6,6 +6,8 @@ import ClassList from './ClassList';
 import firebase from 'firebase';
 import { ReactComponent as Offline } from './offline.svg';
 import { ReactComponent as StudyAlone } from './studyalone.svg';
+import plus from '../components/plus.png';
+import back from '../components/back-icon.png';
 
 const db = firebase.firestore();
 
@@ -199,13 +201,14 @@ const useStyles = makeStyles((theme) => ({
           <div class="classes-header">
           <h1 style={{ float: 'left'}}> Students from {classTitle}</h1>
             <button class="class-button" onClick={handleClassCloaseClick.bind()}>
+            <img src={back} style={{ width: 'inherit', height: 'inherit', margin:'auto'}}/>
             </button>
           </div>
           <div className="students-list">
             {studentList.map((studentName, i) => (
                           <div class="students-button"> 
-                            <button class="class-button" onClick={handleClassCloaseClick.bind()}>
-                            </button>
+                            <div class="status">
+                            </div>
                             <button key={i} class="students-button">
                               <img src={studentName.photoURL} alt="user profile" height='100' width='100'/>
                                 <div style={{display: 'inline-block'}}>
@@ -223,8 +226,14 @@ const useStyles = makeStyles((theme) => ({
           <div class="classes-header">
             <h1 style={{ float: 'left'}}> Classes </h1>
             <button class="class-button" onClick={handleOpen}>
+              <img src={plus} style={{ width: '100%', height: '90%', margin:'auto'}}/>
             </button>
           </div>
+            {userList.map((classTitle, i) => (
+                <button key={i} class="classes-button" onClick={handleClassClick.bind(this, classTitle)} style={{backgroundImage: `linear-gradient(to right, yellow 80%, white 20%)`}}>
+                      {classTitle}
+                </button>
+            ))}
 
           {userList.map((classTitle, i) => (
             <div>
@@ -236,6 +245,7 @@ const useStyles = makeStyles((theme) => ({
               </button>
             </div>
           ))}
+            <div className="add-msg">Press + to add more classes</div>
 
           </div>
         }

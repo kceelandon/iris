@@ -12,7 +12,6 @@ h1 {
 }
 
 .float-container {
-  padding: 20px;
   white-space: nowrap;
   height: 100%;
 }
@@ -20,7 +19,7 @@ h1 {
 .profile {
   width: 30%;
   float: left;
-  padding: 20px;
+  padding: 100px;
   height: 100vh;
   background-color: cadetblue;
 }
@@ -69,6 +68,26 @@ h1 {
   white-space: normal;
 }
 
+.add-msg {
+  margin-top: 50px;
+  font-size: large;
+}
+
+.status{
+  width: 50px; 
+  height: 50px;
+  background-color: green;
+  border: none;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px 0px 0px 0px;
+  border-radius: 50%;
+  justify-content: flex-end;
+  float: center;
+  vertical-align: middle;
+}
+
 .students-button {
   display: flex;
   flex-direction: row;
@@ -84,19 +103,18 @@ h1 {
 }
 
 .class-button {
-  width: 30px; 
-  height: 30px;
+  width: 50px; 
+  height: 50px;
   background-color: green;
   border: none;
   color: white;
-  padding: 25px;
-  text-align: center;
   text-decoration: none;
-  font-size: 16px;
-  margin: 0px 0px 0px 0px;
+  text-align: center;
+  margin: 10px 0px 0px 0px;
   border-radius: 50%;
   justify-content: flex-end;
-  float: right;
+  float: center;
+  vertical-align: middle;
 }
 
 .home {
@@ -104,6 +122,7 @@ h1 {
   float: right;
   height: 100%;
   padding-left: 20px;
+  padding: 50px;
 }
 
 

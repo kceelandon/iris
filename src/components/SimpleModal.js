@@ -131,6 +131,7 @@ const useStyles = makeStyles((theme) => ({
 
     function handleClassClick(t) {
       let students = [];
+      let currentUser = firebase.auth().currentUser.uid;
       let acquireData = db.collection('classes').doc(t).get()
       .then(doc => {
         if (!doc.exists) {
@@ -139,15 +140,18 @@ const useStyles = makeStyles((theme) => ({
           let data = doc.data().users.slice(); 
           let acquireData = db.collection('users');
           data.map(student => {
-            //console.log("student", student);
             acquireData.doc(student).get()
             .then(doc => {
             if (!doc.exists) {
                 console.log('doc does not exist');
             } else {
                 let a = doc.data();
-                console.log("a", a);
-                setStudentList(studentList => studentList.concat(a));
+                console.log("doc", doc);
+                console.log("currentUser", currentUser);
+                if (doc.id !== currentUser) {
+                  console.log(doc.id);
+                  setStudentList(studentList => studentList.concat(a));
+                }
                 console.log("studetns list", studentList);
               }
             })
@@ -166,23 +170,19 @@ const useStyles = makeStyles((theme) => ({
     };
 
     function handleStatusClick(s, nameOfClass) {
-      console.log(s);
       let curr = firebase.auth().currentUser.uid;
       let userListCopy = userList.slice();
       for (let i = 0; i < userListCopy.length; i++) {
         if (userListCopy[i].name === nameOfClass) {
           if (s === 'offline') {
             userListCopy[i].status = 'study with others';
-            console.log('reached here');
           } else if (s === 'study with others') {
             userListCopy[i].status = 'study alone';
           } else {  
             userListCopy[i].status = 'offline';
-            console.log('offline');
           }
           db.collection('users').doc(curr).update({classes: userListCopy});
           setUserList(userListCopy);
-          console.log(userListCopy);
           break;
         }
       }
@@ -206,14 +206,28 @@ const useStyles = makeStyles((theme) => ({
         }
       }
       db.collection('users').doc(curr).update({classes: storage});
-      //db.collection('classes').doc(name).
+      let getData = db.collection('classes').doc(name).get()
+      .then(doc => {
+        if (!doc.exists) {
+          console.log('doc doesnt exist');
+        } else {
+          let copy = doc.data().users.slice();
+          let userIndex = copy.indexOf(curr);
+          if (userIndex > -1) {
+            copy.splice(userIndex, 1);
+          }
+          db.collection('classes').doc(name).update({users: copy});
+        }
+      })
+      .catch(err => {
+        console.log('error reaching', err);
+      });
       setUserList(storage);
     }
 
     function getStatusOfClass(nameOfClass, studentClassList) {
       for (let i = 0; i < studentClassList.length; i++) {
         if (nameOfClass === studentClassList[i].name) {
-          console.log(studentClassList[i].status);
           return studentClassList[i].status;
         }
       }
@@ -244,6 +258,8 @@ const useStyles = makeStyles((theme) => ({
       </div>
       
     );
+
+    const curr = firebase.auth().currentUser.uid;
   
     return (
       <div >

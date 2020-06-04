@@ -38,13 +38,14 @@ class ClassList extends Component {
   componentDidMount() {
     let currentUser = firebase.auth().currentUser.uid;
     let classesRef = db.collection('classes');
+    console.log("Mount called");
     let query = classesRef.get()
       .then(snapshot => {
         snapshot.forEach(doc => {
           let userIdList = doc.data().users.slice();
           if (!userIdList.includes(currentUser) && this.state.userClasses.includes(doc.id)) {
             userIdList.push(currentUser);
-            db.collection('classes').doc(doc.id).update({users: userIdList});
+            db.collection('classes').doc(doc.id).update({users: userIdList}); // updated user list for each class
           }
         });
       })
@@ -65,6 +66,21 @@ class ClassList extends Component {
       console.log('initialized offline');
       this.setState({userClasses: userClassListCopy});
       db.collection('users').doc(currentUser).update({classes: userClassListCopy});
+      let getData = db.collection('classes').doc(className).get()
+      .then(doc => {
+        if (!doc.exists) {
+          console.log('doc doesnt exist');
+        } else {
+          let copy = doc.data().users.slice();
+          if (!copy.includes(currentUser)) {
+            copy.push(currentUser);
+            db.collection('classes').doc(className).update({users: copy});
+          }
+        }
+      })
+      .catch(err => {
+        console.log('error reaching', err);
+      });
     }
   }
 

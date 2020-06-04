@@ -6,11 +6,14 @@ import ClassList from './ClassList';
 import firebase from 'firebase';
 import { ReactComponent as Offline } from './offline.svg';
 import { ReactComponent as StudyAlone } from './studyalone.svg';
+import { ReactComponent as StudyOthers } from './studywithothers.svg';
 import plus from '../components/plus.png';
 import back from '../components/back-icon.png';
+import trashPic from '../components/trash.png';
 
 const db = firebase.firestore();
 
+const colors = ["yellow", "blue", "purple", "orange", "pink"]
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -56,6 +59,8 @@ const useStyles = makeStyles((theme) => ({
     const [studentList, setStudentList] = React.useState([]);
     const [classTitle, setClassTitle] = React.useState(null);
 
+    const [trash, setTrash] = React.useState(false);
+    const [selectedClassName, setSelectedClassName] = React.useState(null);
 
     const [studentModal, setStudentModal] = React.useState(false);
 
@@ -183,15 +188,61 @@ const useStyles = makeStyles((theme) => ({
       }
     }
 
+    function handleTrashClick(name) {
+      setOpen(true);
+      setTrash(true);
+      setSelectedClassName(name);
+    }
+
+    function handleDeleteClick(name) {
+      setOpen(false);
+      setTrash(false);
+      let curr = firebase.auth().currentUser.uid;
+      let userListCopy = userList.slice();
+      let storage = [];
+      for (let i = 0; i < userListCopy.length; i++) {
+        if (userListCopy[i].name !== name) {
+          storage.push(userListCopy[i]);
+        }
+      }
+      db.collection('users').doc(curr).update({classes: storage});
+      //db.collection('classes').doc(name).
+      setUserList(storage);
+    }
+
+    function getStatusOfClass(nameOfClass, studentClassList) {
+      for (let i = 0; i < studentClassList.length; i++) {
+        if (nameOfClass === studentClassList[i].name) {
+          console.log(studentClassList[i].status);
+          return studentClassList[i].status;
+        }
+      }
+    }
+
   
     const body = (
-      <div style={modalStyle} className={styles.paper}>
-        <Filter value={word} handleChange={e=>handleChange(e.target.value)}/>
-        <ClassList classes={word.length < 1 ? classesList : filteredList} userClasses={userList}/>
-        <button type="button" onClick={handleClose}>
-            Close
-        </button>
+        <div style={modalStyle} className={styles.paper}>
+          {trash ? 
+              <div>Do you really want to delete {selectedClassName}? 
+                 <button onClick={handleDeleteClick.bind(this, selectedClassName)}>
+                   Yes, Delete
+                  </button>
+                  <button onClick={()=>{setOpen(false); setTrash(false);}}>
+                   No, Cancel
+                  </button>
+              </div>
+               
+          : 
+            <div>
+            <Filter value={word} handleChange={e=>handleChange(e.target.value)}/>
+            <ClassList classes={word.length < 1 ? classesList : filteredList} userClasses={userList}/>
+            <button type="button" onClick={handleClose}>
+                Close
+            </button>
+            </div>
+          }
       </div>
+      
     );
   
     return (
@@ -200,14 +251,23 @@ const useStyles = makeStyles((theme) => ({
           <div className="classes">
           <div class="classes-header">
           <h1 style={{ float: 'left'}}> Students from {classTitle}</h1>
-            <button class="class-button" onClick={handleClassCloaseClick.bind()}>
+            <button class="back-button" style={{backgroundColor: 'none'}} onClick={handleClassCloaseClick.bind()}>
             <img src={back} style={{ width: 'inherit', height: 'inherit', margin:'auto'}}/>
             </button>
           </div>
           <div className="students-list">
             {studentList.map((studentName, i) => (
                           <div class="students-button"> 
-                            <div class="status">
+                            <div class="status-button">
+                            {(getStatusOfClass(classTitle, studentName.classes) === 'offline') && <div>
+                                <Offline />
+                              </div>}
+                              {(getStatusOfClass(classTitle, studentName.classes) === 'study with others') && <div>
+                                <StudyOthers />
+                              </div>}
+                              {(getStatusOfClass(classTitle, studentName.classes) === 'study alone') && <div>
+                                <StudyAlone/>
+                              </div>}
                             </div>
                             <button key={i} class="students-button">
                               <img src={studentName.photoURL} alt="user profile" height='100' width='100'/>
@@ -223,25 +283,30 @@ const useStyles = makeStyles((theme) => ({
           </div>
         : 
           <div className="classes">
-          <div class="classes-header">
+          <div className="classes-header">
             <h1 style={{ float: 'left'}}> Classes </h1>
-            <button class="class-button" onClick={handleOpen}>
+            <button className="class-button" onClick={handleOpen}>
               <img src={plus} style={{ width: '100%', height: '90%', margin:'auto'}}/>
             </button>
           </div>
-            {userList.map((classTitle, i) => (
-                <button key={i} class="classes-button" onClick={handleClassClick.bind(this, classTitle)} style={{backgroundImage: `linear-gradient(to right, yellow 80%, white 20%)`}}>
-                      {classTitle}
-                </button>
-            ))}
-
           {userList.map((classTitle, i) => (
-            <div>
-              <button class="status-button" onClick={handleStatusClick.bind(this, classTitle.status, classTitle.name)}>
-                    {classTitle.status}
+            <div className="class-list" key={i}>
+              <button key={"status"+i} class="status-button" onClick={handleStatusClick.bind(this, classTitle.status, classTitle.name)}>
+                  {(classTitle.status === 'offline') && <div>
+                    <Offline />
+                  </div>}
+                  {(classTitle.status === 'study with others') && <div>
+                    <StudyOthers />
+                  </div>}
+                  {(classTitle.status === 'study alone') && <div>
+                    <StudyAlone/>
+                  </div>}
               </button>
-              <button key={i} class="classes-button" onClick={handleClassClick.bind(this, classTitle.name)} style={{backgroundImage: `linear-gradient(to right, yellow 80%, white 20%)`}}>
+              <button key={"class"+i} class="classes-button" onClick={handleClassClick.bind(this, classTitle.name)} style={{backgroundImage: `linear-gradient(to right, ${colors[i]} 80%, white 20%)`}}>
                     {classTitle.name}
+              </button>
+              <button key={"trash"+i} class="status-button" onClick={handleTrashClick.bind(this, classTitle.name)}>
+                  <img src={trashPic} style={{ width: '50%', height: '50%', margin:'auto'}}/>
               </button>
             </div>
           ))}
@@ -249,15 +314,13 @@ const useStyles = makeStyles((theme) => ({
 
           </div>
         }
-        
-        
           <Modal
             open={open}
             onClose={handleClose}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
           >
-            {body}
+             {body}
           </Modal>
       </div>
     );

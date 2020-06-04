@@ -56,7 +56,11 @@ class ClassList extends Component {
   handleClick(className) {
     let currentUser = firebase.auth().currentUser.uid;
     let userClassListCopy = this.state.userClasses.slice();
-    if (!userClassListCopy.includes(className) && userClassListCopy.length < 4) {
+    let userClassListNames = [];
+    for (let i = 0; i < userClassListCopy.length; i++) {
+      userClassListNames.push(userClassListCopy[i].name);
+    }
+    if (!userClassListNames.includes(className) && userClassListCopy.length < 4) {
       userClassListCopy.push({name: className, status: 'offline'});
       console.log('initialized offline');
       this.setState({userClasses: userClassListCopy});
